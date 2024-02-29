@@ -1,0 +1,50 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "EmpleadoDependienteGetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EmpleadoDependienteGetAll</h1>
+
+<div class="container">
+    <section>
+        <h2>Módulo</h2>
+    </section>
+    <section>
+        @if (Model.Empleados == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center" style=" font-weight:bold;">Info</td>
+
+                    <td class="hidden">Numero Empleado</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre Completo</td>
+                    <td class="text-center" style="font-weight:bold;">Email</td>
+                    <td class="text-center" style="font-weight:bold;">Telefono</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha de ingreso</td>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-info bi bi-info-square" href="@Url.Action("GetById", "Dependiente", new { numeroEmpleado = empleado.NumeroEmpleado, nombreEmpleado = empleado.Nombre})"></a></td>
+                        <td class="hidden">@empleado.NumeroEmpleado</td>
+                        <td class="text-center">@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno</td>
+                        <td class="text-center">@empleado.Email</td>
+                        <td class="text-center">@empleado.Telefono</td>
+                        <td class="text-center">@empleado.FechaIngreso</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>

@@ -1,0 +1,174 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Form de Empleados</h2>
+
+<div class="row">
+
+    <div class="col-md-12">
+        @using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            
+            <div class="row">
+
+                <div class="col">
+                    @Html.LabelFor(model => model.NumeroEmpleado)
+
+                    @Html.TextBoxFor(model => model.NumeroEmpleado, new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(model => model.NumeroEmpleado, null, new {@class="text-danger"})
+
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.RFC)
+
+                    @Html.TextBoxFor(model => model.RFC, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.RFC, null, new {@class="text-danger"})
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Nombre)
+
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.Nombre, null, new {@class="text-danger"})
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    @Html.LabelFor(model => model.ApellidoPaterno)
+
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.ApellidoPaterno, null, new {@class="text-danger"})
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.ApellidoMaterno)
+
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.ApellidoMaterno, null, new {@class="text-danger"})
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Email)
+
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.Email, null, new {@class="text-danger"})
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Telefono)
+
+                    @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.Telefono, null, new {@class="text-danger"})
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.FechaNacimiento)
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-calendar"></i></span>
+
+                        @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control"})
+
+                        @Html.ValidationMessageFor(model => model.FechaNacimiento, null, new {@class="text-danger"})
+                    </div>
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.NSS)
+
+                    @Html.TextBoxFor(model => model.NSS, new { @class = "form-control"})
+
+                    @Html.ValidationMessageFor(model => model.NSS, null, new {@class="text-danger"})
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Foto)
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-image"></i></span>
+                        <input id="inpImagen" type='file' class="form-control" name="inpImagen" onchange="validateFile(this), visualizarImagen(this);  " />
+                    </div>
+                    @if (Model.Foto == null || Model.Foto == "")
+                    {
+                        <img id="Img" src="~/Images/guest-user.png" style="width:250px ; height:250px" />
+                    }
+                    else
+                    {
+                        <img id="Img" src="data:image/*;base64,@Model.Foto" style="width:250px ; height:250px" />
+                    }
+                    @Html.HiddenFor(model => model.Foto)
+                </div>
+
+                <div class="col">
+                    @Html.LabelFor(model => model.Empresa)
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-building-user"></i></span>
+
+                        @*@Html.TextBoxFor(model => model.Role.IdRole, new { @class = "form-control", @id = "txtNombre" })*@
+
+                        @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Selecciona una opción", new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Empresa.IdEmpresa, null, new {@class="text-danger"})
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.action)
+            </div>
+            <div class="col text-center">
+                <input type="submit" value="Guardar" class="btn btn-success " />
+
+                @Html.ActionLink("Regresar", "GetAll", "Empleado", htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function validateFile() {
+        var allowedExtension = ['jpeg', 'jpg', 'png'];
+        var fileExtension = document.getElementById('inpImagen').value.split('.').pop().toLowerCase();
+        var isValidFile = false;
+        for (var index in allowedExtension) {
+            if (fileExtension === allowedExtension[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));
+            document.getElementById('inpImagen').value = ""
+        }
+        return isValidFile;
+    }
+
+    function visualizarImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#Img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

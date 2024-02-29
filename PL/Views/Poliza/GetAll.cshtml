@@ -1,0 +1,68 @@
+﻿@model ML.Poliza
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAll</h1>
+
+<div class="container">
+    <section>
+        <h2>Módulo</h2>
+
+    </section>
+    <section>
+        <div style="float:left;">
+            @Html.ActionLink("Agregar", "Form", "Poliza", htmlAttributes: new { @class = "btn btn-success bi bi-person-plus-fill" })
+
+        </div>
+    </section>
+
+    <section>
+        @if (Model.Polizas == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center" style=" font-weight:bold;">Editar</td>
+
+                    <td class="hidden">IdPoliza</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre</td>
+                    <td class="hidden">IdPoliza</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre SubPoliza</td>
+                    <td class="text-center" style="font-weight:bold;">Numero de Poliza</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha Creacion</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha Modificacion</td>
+                    <td class="hidden">IdUsuario</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre Completo</td>
+
+                    <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (ML.Poliza poliza in Model.Polizas)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Poliza", new { idPoliza = poliza.IdPoliza})"></a></td>
+                        <td class="hidden">@poliza.IdPoliza</td>
+                        <td class="text-center">@poliza.Nombre</td>
+                        <td class="hidden">@poliza.SubPoliza.IdSubPoliza</td>
+                        <td class="text-center">@poliza.SubPoliza.Nombre</td>
+                        <td class="text-center">@poliza.NumeroPoliza</td>
+                        <td class="text-center">@poliza.FechaCreacion</td>
+                        <td class="text-center">@poliza.FechaModificacion</td>
+                        <td class="hidden">@poliza.Usuario.IdUsuario</td>
+                        <td class="text-center">@poliza.Usuario.Nombre @poliza.Usuario.ApellidoPaterno @poliza.Usuario.ApellidoMaterno</td>
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Poliza", new { idPoliza = poliza.IdPoliza})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>

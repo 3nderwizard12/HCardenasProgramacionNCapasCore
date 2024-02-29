@@ -1,0 +1,244 @@
+﻿@model ML.Dependiente
+@{
+    ViewData["Title"] = "GetById";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetById</h1>
+
+<div class="container">
+    <section>
+        <h2><td class="text-center">@Model.Empleado.Nombre</td></h2>
+
+    </section>
+    <section>
+        <div style="float:left;">
+            @*@Html.ActionLink("Agregar", "Form", "Dependiente", htmlAttributes: new { @class = "btn btn-success bi bi-person-plus-fill" })*@
+            <button class="btn btn-success bi bi-person-plus-fill" onclick="FormModal(true)">Agregar</button>
+        </div>
+    </section>
+
+    <section>
+        @if (Model.Dependientes == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center" style=" font-weight:bold;">Editar</td>
+
+                    <td class="hidden">IdDependiente</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre Completo</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha de Nacimiento</td>
+                    <td class="text-center" style="font-weight:bold;">Estado civil</td>
+                    <td class="text-center" style="font-weight:bold;">Genero</td>
+                    <td class="text-center" style="font-weight:bold;">Telefono</td>
+                    <td class="text-center" style="font-weight:bold;">RfC</td>
+                    <td class="hidden">IdDependienteTipo</td>
+                    <td class="text-center" style="font-weight:bold;">Dependiente Tipo</td>
+
+                    <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (ML.Dependiente dependiente in Model.Dependientes)
+                {
+                    <tr>
+                        @*<td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Dependiente", new { idDependiente = dependiente.IdDependiente})"></a></td>*@
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("GetById", "Dependiente", new { idDependiente = dependiente.IdDependiente, numeroEmpleado = dependiente.Empleado.NumeroEmpleado, nombreEmpleado = dependiente.Empleado.Nombre})" onclick="FormModal(true)"></a></td>
+                        @*<button class="btn btn-success bi bi-person-plus-fill" id="Update" onclick="FormModal(true)"></button>*@
+                        <td class="hidden">@dependiente.IdDependiente</td>
+                        <td class="text-center">@dependiente.Nombre @dependiente.ApellidoPaterno @dependiente.Apellidomaterno</td>
+                        <td class="text-center">@dependiente.FechaNacimiento</td>
+                        <td class="text-center">@dependiente.EstadoCivil</td>
+                        <td class="text-center">@dependiente.Genero</td>
+                        <td class="text-center">@dependiente.Telefono</td>
+                        <td class="text-center">@dependiente.RFC</td>
+                        <td class="hidden">@dependiente.DependienteTipo.IdDependienteTipo</td>
+                        <td class="text-center">@dependiente.DependienteTipo.Nombre</td>
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Dependiente", new { idDependiente = dependiente.IdDependiente})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://bootboxjs.com/bootbox.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<div class="modal" tabindex="-1" role="dialog" id="modalValidacion">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Aviso</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("Form", "Dependiente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="col">
+                            @Html.LabelFor(model => model.IdDependiente, new { @class = "visually-hidden" })
+
+                            @Html.TextBoxFor(model => model.IdDependiente, new { @class = "visually-hidden form-control" })
+
+                            @Html.ValidationMessageFor(model => model.IdDependiente)
+
+                        </div>
+
+                        <div class="col">
+                            @Html.LabelFor(model => model.Empleado.NumeroEmpleado, new { @class = "visually-hidden" })
+
+                            @Html.TextBoxFor(model => model.Empleado.NumeroEmpleado, new { @class = "visually-hidden form-control" })
+
+                            @Html.ValidationMessageFor(model => model.Empleado.NumeroEmpleado)
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.Nombre)
+
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.Nombre)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.ApellidoPaterno)
+
+                                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.Apellidomaterno)
+
+                                @Html.TextBoxFor(model => model.Apellidomaterno, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.Apellidomaterno)
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.FechaNacimiento)
+
+                                @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.FechaNacimiento)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.EstadoCivil)
+
+                                @Html.TextBoxFor(model => model.EstadoCivil, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.EstadoCivil)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.Genero)
+
+                                @Html.TextBoxFor(model => model.Genero, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.Genero)
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.Telefono)
+
+                                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.Telefono)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.RFC)
+
+                                @Html.TextBoxFor(model => model.RFC, new { @class = "form-control", @id = "" })
+
+                                @Html.ValidationMessageFor(model => model.RFC)
+                            </div>
+
+                            <div class="col">
+                                @Html.LabelFor(model => model.DependienteTipo)
+
+                                @Html.DropDownListFor(model => model.DependienteTipo.IdDependienteTipo, new SelectList(Model.DependienteTipo.DependienteTipos, "IdDependienteTipo", "Nombre"), "Selecciona una opción", new { @class = "form-control" })
+
+                                @Html.ValidationMessageFor(model => model.DependienteTipo.IdDependienteTipo)
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col text-center">
+                                <input type="submit" value="Guardar" class="btn btn-success " />
+                                @*@Html.ActionLink("Regresar", "GetAll", "Aseguradora", htmlAttributes: new { @class = "btn btn-danger" })*@
+                                
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="FormModal(false)">Regresar</button>
+                @*@Html.ActionLink("Regresar", "GetAll", "Usuario", htmlAttributes: new { @class = "btn btn-danger" })*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function FormModal(bool){
+        if (bool == true){
+            $('#modalValidacion').modal("show");
+        }
+        else{
+            $('#modalValidacion').modal("hide");
+        }
+    }
+    $("#update").click(function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Update")',
+            dataType: "json",
+            data: { IdDependeinte: $("#idDependiente").val(), NumeroEmpleado: $("#NumeroEmpleado").val(), Nombre: $("#NombreEmpleado").val() },
+            success: function (result) {
+                $('#modalValidacion').modal('hide');
+                $('#IdEmpleado').val("");
+                $('#Nombre').val("");
+                $('#ApellidoPaterno').val("");
+                $('#Apellidomaterno').val("");
+                $('#FechaNacimiento').val("");
+                $('#EstadoCivil').val("");
+                $('#Genero').val("");
+                $('#Telefono').val("");
+            },
+            error: function (ex) {
+                alert('Failed.' + ex);
+            },
+        });
+    });
+</script>

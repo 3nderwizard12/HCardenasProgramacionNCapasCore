@@ -1,0 +1,50 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Empleados</h1>
+
+<div class="container">
+    <section>
+        <h2>CRUD</h2>
+    </section>
+    <section>
+        <div style="float:left;">
+            @Html.ActionLink("Agregar", "Form", "Empleado", htmlAttributes: new { @class = "btn btn-success bi bi-person-plus-fill" })
+        </div>
+    </section>
+
+    <div class="row">
+        @if (Model.Empleados == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        @foreach (ML.Empleado empleado in Model.Empleados)
+        {
+            <div class="col mt-3 pt-3">
+                <div class="card text-primary border-success mb-3" style="width: 18rem;">
+                    @if (empleado.Foto == null || empleado.Foto == "")
+                    {
+                        <td class="card-img-top"><img src="~/Images/guest-user.png" /></td>
+                    }
+                    else
+                    {
+                        <td> <img class="card-img-top" id="Img" src="data:image/*;base64,@empleado.Foto" /></td>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">Empleado</h5>
+                        <p class="card-text">Nombre: @empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno</p>
+                        <p class="card-text">Correo: @empleado.Email</p>
+                        <p class="card-text">Telefono: @empleado.Telefono</p>
+                        <a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Empleado", new { numeroEmpleado = empleado.NumeroEmpleado})"></a>
+                        <a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Empleado", new { numeroEmpleado = empleado.NumeroEmpleado})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

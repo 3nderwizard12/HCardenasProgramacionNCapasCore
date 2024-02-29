@@ -1,0 +1,69 @@
+﻿@model ML.Empresa
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAll Empresa</h1>
+
+<div class="container">
+    <section>
+        <h2>Módulo</h2>
+
+    </section>
+    <section>
+        <div style="float:left;">
+            @Html.ActionLink("Agregar", "Form", "Aseguradora", htmlAttributes: new { @class = "btn btn-success bi bi-person-plus-fill" })
+
+        </div>
+    </section>
+
+    <section>
+        @if (Model.Empresas == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center" style=" font-weight:bold;">Editar</td>
+
+                    <td class="hidden">IdEmpresa</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre</td>
+                    <td class="text-center" style="font-weight:bold;">Telefono</td>
+                    <td class="text-center" style="font-weight:bold;">Email</td>
+                    <td class="text-center" style="font-weight:bold;">direccion</td>
+                    <td class="text-center" style="font-weight:bold;">Logo</td>
+
+                    <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (ML.Empresa empresa in Model.Empresas)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Empresa", new { idEmpresa = empresa.IdEmpresa})"></a></td>
+                        <td class="hidden">@empresa.IdEmpresa</td>
+                        <td class="text-center">@empresa.Nombre</td>
+                        <td class="text-center">@empresa.Telefono</td>
+                        <td class="text-center">@empresa.Email</td>
+                        <td class="text-center">@empresa.DireccionWeb</td>
+                        @if (empresa.Logo == null)
+                        {
+                            <td class="text-center"><img src="~/Images/logo.png" width="50px" height="50px" /></td>
+                        }
+                        else
+                        {
+                            <td> <img id="Img" src="data:image/*;base64,@empresa.Logo" style="width:50px ; height:50px" /></td>
+                        }
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Empresa", new { idEmpresa = empresa.IdEmpresa})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>

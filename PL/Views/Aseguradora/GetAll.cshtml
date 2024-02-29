@@ -1,0 +1,66 @@
+﻿@model ML.Aseguradora
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAll</h1>
+
+<div class="container">
+    <section>
+        <h2>Módulo</h2>
+
+    </section>
+    <section>
+        <div style="float:left;">
+            @Html.ActionLink("Agregar", "Form", "Aseguradora", htmlAttributes: new { @class = "btn btn-success bi bi-person-plus-fill" })
+
+        </div>
+    </section>
+
+    <section>
+        @if (Model.Aseguradoras == null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td class="text-center" style=" font-weight:bold;">Editar</td>
+
+                    <td class="hidden">IdAseguradora</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha de Creacion</td>
+                    <td class="text-center" style="font-weight:bold;">Fecha de MOdificacion</td>
+                    <td class="hidden">IdUsuario</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre</td>
+                    <td class="text-center" style="font-weight:bold;">Apellido Paterno</td>
+                    <td class="text-center" style="font-weight:bold;">Apellido Materno</td>
+
+                    <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (ML.Aseguradora aseguradora in Model.Aseguradoras)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-square" href="@Url.Action("Form", "Aseguradora", new { idAseguradora = aseguradora.IdAseguradora})"></a></td>
+                        <td class="hidden">@aseguradora.IdAseguradora</td>
+                        <td class="text-center">@aseguradora.Nombre</td>
+                        <td class="text-center">@aseguradora.FechaCreacion</td>
+                        <td class="text-center">@aseguradora.FechaModificacion</td>
+                        <td class="text-center">@aseguradora.Usuario.IdUsuario</td>
+                        <td class="text-center">@aseguradora.Usuario.Nombre</td>
+                        <td class="text-center">@aseguradora.Usuario.ApellidoPaterno</td>
+                        <td class="text-center">@aseguradora.Usuario.ApellidoMaterno</td>
+                        <td class="text-center"><a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Aseguradora", new { idAseguradora = aseguradora.IdAseguradora})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>
